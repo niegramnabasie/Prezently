@@ -1,0 +1,11 @@
+@media only screen and (min-width: 1200px) {
+    /* For tablets: */
+    h1 {font-size: 3.83vw;}
+    h2 {font-size: 2.87vw;}
+    h3 {font-size: 2.02vw;}
+    /*h4 {font-size: ;}*/
+    h5 {font-size: 1.06vw;}
+    p {font-size: 1.06vw;}
+    a {font-size: 0.8vw; line-height: 0.9vw; }
+    .main-howto-step h1 {font-size: 10.63vw;}
+}
