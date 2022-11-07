@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div>
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        {% if app.user %}
+            <div class="subtitle">
+                <h4>Jesteś zalogowany jako {{ app.user.userIdentifier }}</h4>
+                <a class="bright-btn" href="{{ path('app_logout') }}">Wyloguj się</a>
+            </div>
+        {% endif %}
+        <div class="sing-in-up sing-in offset-xl-4 col-xl-4 ">
+            <h1 class="title">Załóż konto</h1>
+
+            {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.firstName) }}
+            {{ form_row(registrationForm.lastName) }}
+            <div class="form-row"> Data urodzenia* {{ form_row(registrationForm.birthDate) }}</div>
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword) }}
+            <div class="form-row"><p>Akceptuje regulamin</p> {{ form_row(registrationForm.agreeTerms) }}</div>
+            <button type="submit" class="more-dark-btn">Zarejestruj się</button>
+            {{ form_end(registrationForm) }}
+        </div>
+
+    </div>
+
+{% endblock %}

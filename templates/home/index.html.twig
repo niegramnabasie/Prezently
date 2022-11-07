@@ -1,14 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prezently2{% endblock %}
+{% block title %}Prezently{% endblock %}
 
 {% block body %}
-{#<div class="content">#}
-{#    <div class="">#}
-{#        <div class="row title">#}
-{#            <h1 class="offset-3 col-5">Moje wydarzenia!</h1>#}
+    <div class="header-photo">
+        <h1>Stwórz wydarzenie</h1>
+        <h5>Zacznij zbiórkę na prezenty</h5><br/>
+        <a href="" class="dark-btn">Utwórz</a>
+{#        <?php #}
+{#			if (isset($_SESSION['logged'])){#}
+{#				echo '<a href="" class="dark-btn">Utwórz</a>';              //Funkcjonalność przycisku !!!!#}
+{#        }#}
+{#        else{#}
+{#        echo '<a href="login_page.php" class="bright-btn">Zaloguj się</a><br/>#}
+{#        <a href="login_page.php" class="dark-btn">Zarejestruj się</a>';#}
+{#        }#}
+{#        ?>#}
+    </div>
+
+    <div class="content">
+{#        <div class="main-search">#}
+{#            <h2>Znajdź wydarzenie</h2>#}
+{#            <h5>Wpisz unikalny numer twojej zbiórki lub nazwę</h5>#}
+{#            <form class="" role="search">#}
+{#                <input type="search" class="" placeholder="Szukaj..." aria-label="Search">#}
+{#            </form>#}
 {#        </div>#}
-{#    </div>#}
-{#</div>#}
+        <div class="main-section" id="howitworks">
+            <h2>Jak to działa?</h2>
+            <div class="main-howto-steps container">
+                <div class="main-howto-step col-4 container">
+                    <h1 class="col-3">1</h1>
+                    <div class="col-9">
+                        <h3>Konto</h3>
+                        <p>Załóż darmowe konto lub zaloguj się do serwisu</p>
+                    </div>
+                </div>
+                <div class="main-howto-step col-4 container">
+                    <h1 class="col-3">2</h1>
+                    <div class="col-9">
+                        <h3>Wydarzenie</h3>
+                        <p>Utwórz wydarzenie, wybierz dla niego plan, a następnie dodaj listę prezentów.</p>
+                    </div>
+                </div>
+                <div class="main-howto-step col-4 container">
+                    <h1 class="col-3">3</h1>
+                    <div class="col-9">
+                        <h3>Udostępnianie</h3>
+                        <p>Wygeneruj kod QR, link oraz unikalną nazwę wydarzenia aby twoi bliscy dowiedzili się o zbiórce.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-section" id="plans">
+            <h2>Plany wydarzeń</h2>
+            <div class="main-plans">
+                <div class="plan plan-empty col-3" id="left-plan">
+                    <h3>Free (php)</h3>
+                    <h1>0 zł</h1>
+                    <ul>
+                        <li>2 prezenty</li>
+                        <li>udostępnianie zbiórki przez link</li>
+                    </ul>
+                </div>
+                <div class="plan plan-solid col-3 offset-1">
+                    <h3>Plus (php)</h3>
+                    <h1>5 zł</h1>
+                    <ul>
+                        <li>4 prezenty</li>
+                        <li>udostępnianie zbiórki przez link i/lub unikalną nazwę</li>
+                        <li>mozliwość tworzenia ankiety</li>
+                    </ul>
+                </div>
+                <div class="plan plan-empty col-3 offset-1" id="right-plan">
+                    <h3>Pro (php)</h3>
+                    <h1>15 zł</h1>
+                    <ul>
+                        <li>nielimitowana ilość prezentów</li>
+                        <li>udostępnianie zbiórki przez link, unikalną nazwę i/lub kod QR</li>
+                        <li>mozliwość tworzenia ankiety</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main-section main-about" id="aboutus">
+            <img class="col-4" src="images\hands.svg" />
+            <div class="main-about-text">
+                <h2>O nas</h2>
+                <h5>Dlaczego robimy to co robimy?</h5>
+                <p>Na początku... HEJ! Jesteśmy grupką znajomych która stworzyłą tą aplikację z potrzeby łatwego i szybkiego zakładania zbiórek na różnego rodzaju wydarzenia m.in wesela, urodziny itp.</p>
+                <p>Cieszymy się że do nas zajrzałeś i mamy nadzieję że zostaniesz na dłużej :)</p>
+                <br>
+                <p>Jeśli masz jakieś pytania śmiało pisz na naszego maila lub media społecznościowe, niestety nie możemy obiecać że szybko odpiszemy bo zapewne bawimy sie na czyimyś weselu lub urodzinach ;)</p>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
