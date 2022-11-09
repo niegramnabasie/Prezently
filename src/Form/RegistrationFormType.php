@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,11 +32,33 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Imię*',
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Proszę wpisać imię',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Twoje imię nie powinno być krótsze niż {{ limit }} znaki',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ],
             ])
             ->add('lastName',TextType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Nazwisko*',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Proszę wpisać nazwisko',
+                    ]),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Twoje nazwisko nie powinno być krótsze niż {{ limit }} znaki',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
                 ],
                 ])
             ->add('birthDate',DateType::class, [
@@ -44,22 +67,44 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
-                'label' => false,
+                'label' => 'Akceptuje regulamin',
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
+//            ->add('plainPassword', PasswordType::class, [
+//                // instead of being set onto the object directly,
+//                // this is read and encoded in the controller
+//                'mapped' => false,
+//                'label' => false,
+//                'attr' => [
+//                    'autocomplete' => 'new-password',
+//                    'placeholder' => 'Hasło*',
+//                ],
+//                'constraints' => [
+//                    new NotBlank([
+//                        'message' => 'Please enter a password',
+//                    ]),
+//                    new Length([
+//                        'min' => 6,
+//                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+//                        // max length allowed by Symfony for security reasons
+//                        'max' => 4096,
+//                    ]),
+//                ],
+//            ])
+            ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
+                'type' => PasswordType::class,
                 'mapped' => false,
-                'label' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
                     'placeholder' => 'Hasło*',
                 ],
+                'invalid_message' => 'Hasła muszą do siebie pasować',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -71,6 +116,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'first_options'  => ['label' => false],
+                'second_options' => ['label' => false],
             ])
         ;
     }

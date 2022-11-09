@@ -5,17 +5,11 @@
 {% block body %}
     <div class="header-photo">
         <h1>Stwórz wydarzenie</h1>
-        <h5>Zacznij zbiórkę na prezenty</h5><br/>
-        <a href="" class="dark-btn">Utwórz</a>
-{#        <?php #}
-{#			if (isset($_SESSION['logged'])){#}
-{#				echo '<a href="" class="dark-btn">Utwórz</a>';              //Funkcjonalność przycisku !!!!#}
-{#        }#}
-{#        else{#}
-{#        echo '<a href="login_page.php" class="bright-btn">Zaloguj się</a><br/>#}
-{#        <a href="login_page.php" class="dark-btn">Zarejestruj się</a>';#}
-{#        }#}
-{#        ?>#}
+        <h5>Zacznij zbiórkę na prezenty</h5>
+        <a href="{{app.user ? path('app_event_new') : path('app_register')}}" class="bright-btn">{{ app.user ? 'Utwórz' : 'Zarejestruj się' }}</a><br>
+        {% if not app.user %}
+            <a href="{{ path('app_login') }}" class="dark-btn">Zaloguj się</a>
+        {% endif %}
     </div>
 
     <div class="content">

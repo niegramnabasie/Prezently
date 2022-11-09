@@ -3,25 +3,25 @@
 {% block title %}Prezently - zaloguj się!{% endblock %}
 
 {% block body %}
-<div class="">
+<div class="content">
     {% if app.user %}
         <div class="subtitle">
             <h4>Jesteś zalogowany jako {{ app.user.userIdentifier }}</h4>
             <a class="bright-btn" href="{{ path('app_logout') }}">Wyloguj się</a>
         </div>
     {% endif %}
-    <div class="sing-in-up sing-in offset-xl-4 col-xl-4 ">
+    <div class="sing-in-up sing-in offset-4 col-4 ">
         <form method="post">
             <h1 class="title">Zaloguj się</h1>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
-            <div class="input_div">
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="E-mail" autocomplete="email" required autofocus>
+            <div>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="E-mail" autocomplete="email" required autofocus class="form-control">
             </div>
-            <div class="input_div">
-                <input type="password" name="password" id="inputPassword" placeholder="Hasło" autocomplete="current-password" required>
+            <div>
+                <input type="password" name="password" id="inputPassword" placeholder="Hasło" autocomplete="current-password" required class="form-control">
             </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
