@@ -73,10 +73,13 @@ a{
     text-align: center;
 }
 .subtitle{
-    margin-top: 80px;
     justify-content: center;
+    text-align: center;
     display: flex;
 }
+.subtitle_btn{
+    padding-top: 2.8vh;
+ }
 
 /* Errory */
 .error{
@@ -241,7 +244,7 @@ footer{
 
 /* Content */
 .content{
-    margin: 110px 3.6vw;
+    margin: 80px 3.6vw;
 }
 
 
@@ -417,30 +420,38 @@ footer{
 
 
 /* MY EVENTS */
-.button_align{
-    align-self: center;
-
-}
 .myevents_status_activ{
+    margin-top: 2.5vh;
     text-align: center;
     color: var(--brown40);
     border-bottom: 1px solid var(--brown40);
 }
 .myevents_status_inactiv{
+    margin-top: 11.5vh;
     text-align: center;
     color: var(--lightgray);
     border-bottom: 1px solid var(--lightgray);
 }
 
-
 .event{
     margin: 40px 0;
+    display: flex;
 }
 .event_title{
-    margin-bottom: 45px;
+    margin-bottom: 35px;
 }
 .event_info{
     display: flex;
     gap: 30px;
-    margin-bottom: 22px;
+    margin-bottom: 10px;
+}
+.event_photo{
+    margin-right: 85px;
+    max-height: 42vh;
+}
+#event_lastinfo{
+    margin-bottom: 25px;
+}
+#event_inactive_photo{
+    opacity: 0.5;
 }

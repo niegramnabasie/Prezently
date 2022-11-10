@@ -1,41 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Event index{% endblock %}
+{% block title %}Prezently - Moje wydarzenia (Event index){% endblock %}
 
 {% block body %}
-    <h1>Event index</h1>
+    <div class="content">
+        <div class="subtitle row">
+            <h1 class="offset-3 col-6 title">Moje wydarzenia</h1>
+            <div class="subtitle_btn col-3">
+                <a href="{{ path('app_event_new') }}" class="dark-btn">Dodaj wydarzenie</a>
+            </div>
+        </div>
+        <div class="events offset-1">
+            <p class="myevents_status_activ col-11">Aktywne</p>
+            {% for event in activ_events %}
+                <div class="event">
+                    <img class="event_photo col-4" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
+                    <div class="">
+                        <h2 class="event_title ">{{ event.name }}</h2>
+                        <div class="event_info">
+                            <h5 class="bold">Liczba prezentów:</h5>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>EndDate</th>
-                <th>Photo</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.id }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.description }}</td>
-                <td>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</td>
-                <td>{{ event.photo }}</td>
-                <td>
-                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                        </div>
+                        <div class="event_info">
+                            <h5 class="bold">Liczba wpłat:</h5>
 
-    <a href="{{ path('app_event_new') }}">Create new</a>
+                        </div>
+                        <div class="event_info">
+                            <h5 class="bold">Status: </h5>
+
+                        </div>
+                        <div class="event_info" id="event_lastinfo">
+                            <h5 class="bold">Data zakończenia</h5>
+                            <h5>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</h5>
+                        </div>
+                        <a class="event_btn bright-btn" href="{{ path('app_event_show', {'id': event.id}) }}">Więcej</a>
+                    </div>
+                </div>
+                {#            <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>#}
+            {% else %}
+                <tr>
+                    <td colspan="6">Nie masz aktywnych wydarzeń</td>
+                </tr>
+            {% endfor %}
+        </div>
+
+        <div class="events offset-1">
+            <p class="myevents_status_inactiv col-11">Nieaktywne</p>
+            {% for event in activ_events %}
+                <div class="event">
+                    <img class="event_photo col-4" id="event_inactive_photo" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
+                    <div class="">
+                        <h2 class="event_title ">{{ event.name }}</h2>
+                        <div class="event_info">
+                            <h5 class="bold">Liczba prezentów:</h5>
+                            {# TODO #}
+                        </div>
+                        <div class="event_info">
+                            <h5 class="bold">Liczba wpłat:</h5>
+                            {# TODO #}
+                        </div>
+                        <div class="event_info">
+                            <h5 class="bold">Status: </h5>
+                            {# TODO #}
+                        </div>
+                        <div class="event_info" id="event_lastinfo">
+                            <h5 class="bold">Data zakończenia</h5>
+                            <h5>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</h5>
+                        </div>
+                        <a class="event_btn bright-btn" href="{{ path('app_event_show', {'id': event.id}) }}">Więcej</a>
+                    </div>
+                </div>
+                {#            <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>#}
+            {% else %}
+                <tr>
+                    <td colspan="6">Nie masz aktywnych wydarzeń</td>
+                </tr>
+            {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}
