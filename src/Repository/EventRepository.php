@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,32 @@ class EventRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Event::class);
+    }
+
+    public function findActivByUser (User $user)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where('e.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('e.endDate >= :now')
+            ->setParameter('now', date('Y-m-d'));
+
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return $result;
+    }
+
+    public function findInactivByUser (User $user)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where('e.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('e.endDate < :now')
+            ->setParameter('now', date('Y-m-d'));
+
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return $result;
     }
 
     public function save(Event $entity, bool $flush = false): void

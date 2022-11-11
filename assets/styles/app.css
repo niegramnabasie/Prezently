@@ -418,7 +418,6 @@ footer{
     border-left: 1px solid var(--brown40);
 }
 
-
 /* MY EVENTS */
 .myevents_status_activ{
     margin-top: 2.5vh;
@@ -434,7 +433,7 @@ footer{
 }
 
 .event{
-    margin: 40px 0;
+    padding: 40px 0;
     display: flex;
 }
 .event_title{
