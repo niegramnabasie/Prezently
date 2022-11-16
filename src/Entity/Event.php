@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Gift;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -33,6 +36,14 @@ class Event
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?PricePoint $pricePoint = null;
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Gift::class, orphanRemoval: true)]
+    private Collection $gifts;
+
+    public function __construct()
+    {
+        $this->gifts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,5 +120,55 @@ class Event
         $this->pricePoint = $pricePoint;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Gift>
+     */
+    public function getGifts(): Collection
+    {
+        return $this->gifts;
+    }
+
+    public function getAmountOfGifts(): ?int
+    {
+        return count($this->getGifts());
+    }
+
+    public function getAmountOfDonations(): ?int
+    {
+        $amountOfDonations = 0;
+        foreach ($this->gifts as $gift)
+        {
+            $amountOfDonations += $gift->getAmogetAmountOfDonations();
+        }
+        return $amountOfDonations;
+    }
+
+    public function addGift(Gift $gift): self
+    {
+        if (!$this->gifts->contains($gift)) {
+            $this->gifts->add($gift);
+            $gift->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGift(Gift $gift): self
+    {
+        if ($this->gifts->removeElement($gift)) {
+            // set the owning side to null (unless already changed)
+            if ($gift->getEvent() === $this) {
+                $gift->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

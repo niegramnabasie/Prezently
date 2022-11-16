@@ -454,3 +454,9 @@ footer{
 #event_inactive_photo{
     opacity: 0.5;
 }
+.green_status{
+    color: var(--green);
+}
+.red_status{
+    color: var(--red);
+}

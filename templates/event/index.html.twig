@@ -19,15 +19,15 @@
                         <h2 class="event_title ">{{ event.name }}</h2>
                         <div class="event_info">
                             <h5 class="bold">Liczba prezentów:</h5>
-
+                            <h5>{{ event.getAmountOfGifts() }}</h5>
                         </div>
                         <div class="event_info">
                             <h5 class="bold">Liczba wpłat:</h5>
-
+                            <h5>{{ event.getAmountOfDonations() }}</h5>
                         </div>
                         <div class="event_info">
                             <h5 class="bold">Status: </h5>
-
+                            <h5 class="green_status">Aktywne</h5>
                         </div>
                         <div class="event_info" id="event_lastinfo">
                             <h5 class="bold">Data zakończenia</h5>
@@ -53,15 +53,15 @@
                         <h2 class="event_title ">{{ event.name }}</h2>
                         <div class="event_info">
                             <h5 class="bold">Liczba prezentów:</h5>
-                            {# TODO #}
+                            <h5>{{ event.getAmountOfGifts() }}</h5>
                         </div>
                         <div class="event_info">
                             <h5 class="bold">Liczba wpłat:</h5>
-                            {# TODO #}
+                            <h5>{{ event.getAmountOfDonations() }}</h5>
                         </div>
                         <div class="event_info">
                             <h5 class="bold">Status: </h5>
-                            {# TODO #}
+                            <h5 class="red_status">Nieaktywne</h5>
                         </div>
                         <div class="event_info" id="event_lastinfo">
                             <h5 class="bold">Data zakończenia</h5>
