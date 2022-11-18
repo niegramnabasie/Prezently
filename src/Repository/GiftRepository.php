@@ -21,6 +21,16 @@ class GiftRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Gift::class);
     }
+    public function findByEvent (Event $event)
+    {
+        $qb = $this->createQueryBuilder('g');
+        $qb->where('g.event = :event')
+            ->setParameter('event', $event);
+
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return $result;
+    }
 
     public function save(Gift $entity, bool $flush = false): void
     {

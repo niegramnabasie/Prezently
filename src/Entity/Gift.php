@@ -103,6 +103,11 @@ class Gift
         return count($this->getDonations());
     }
 
+    public function getSumOfDonations(): ?float
+    {
+        return round(array_sum($this->getDonations()));
+    }
+
     public function addDonation(Donation $donation): self
     {
         if (!$this->donations->contains($donation)) {
@@ -123,5 +128,10 @@ class Gift
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

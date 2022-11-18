@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Repository\PricePointRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Component\Security\Core\Security;
@@ -13,13 +14,13 @@ use App\Repository\UserRepository;
 class EventUtil
 {
     private EventRepository $eventRepository;
-    private UserRepository $userRepository;
+    private PricePointRepository $pricePointRepository;
     private $security;
 
-    public function __construct(EventRepository $eventRepository, UserRepository $userRepository, Security $security)
+    public function __construct(EventRepository $eventRepository, PricePointRepository $pricePointRepository, Security $security)
     {
         $this->eventRepository = $eventRepository;
-        $this->userRepository = $userRepository;
+        $this->pricePointRepository = $pricePointRepository;
         $this->security = $security;
     }
 
@@ -33,9 +34,19 @@ class EventUtil
         return $events;
     }
 
-    public function getAmountOfGifts(Array $events) //eg. $events['activ']
+    public function nextPricePoint(Event $event)
     {
+        $thisEventPP= $event->getPricePoint();
+        $thisEventPPId = $thisEventPP->getId();
+        if ($thisEventPPId > 2){
+            $availableNext = false;
+            $nextPricePoint = $thisEventPP;
+        } else{
+            $availableNext = true;
+            $nextPricePoint = $this->pricePointRepository->find($thisEventPPId+1);
+        }
 
+        return [$nextPricePoint, $availableNext] ;
     }
 
 }

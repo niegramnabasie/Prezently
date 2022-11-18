@@ -3,36 +3,149 @@
 {% block title %}Prezently - Twoje wydarzenia{% endblock %}
 
 {% block body %}
-    <h1>Event</h1>
+    <div class="content">
+        <div class="subtitle row">
+            <h1 class="offset-3 col-6 title">{{ event.name }}</h1>
+            <div class="subtitle_btn col-3">
+            </div>
+        </div>
+        <div class="events offset-1">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ event.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ event.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ event.description }}</td>
-            </tr>
-            <tr>
-                <th>EndDate</th>
-                <td>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td>{{ event.photo }}</td>
-            </tr>
-        </tbody>
-    </table>
+{#            Główne informacje o wydarzeniu    #}
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
+            <div class="event">
+                <img class="event_photo col-4" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
+                <div class="col-6">
+                    <h5 class="event_title ">{{ event.description }}</h5>
+                    <div class="event_info">
+                        <h5 class="bold">Liczba prezentów:</h5>
+                        <h5>{{ event.getAmountOfGifts() }}</h5>
+                    </div>
+                    <div class="event_info">
+                        <h5 class="bold">Liczba wpłat:</h5>
+                        <h5>{{ event.getAmountOfDonations() }}</h5>
+                    </div>
+                    <div class="event_info">
+                        <h5 class="bold">Status: </h5>
+                        <h5 class="green_status">Aktywne</h5>
+                    </div>
+                    <div class="event_info" id="event_lastinfo">
+                        <h5 class="bold">Data zakończenia</h5>
+                        <h5>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</h5>
+                    </div>
+                </div>
+            </div>
 
-    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+{#            Menu wydarzenia   #}
 
-    {{ include('event/_delete_form.html.twig') }}
+            <div class="event_menu col-11">
+                <h6 class="event_menu_item event_menu_item_active" id="event_menu_gifts">Prezenty</h6>
+                <h6 class="event_menu_item" id="event_menu_donations">Wpłaty</h6>
+                <h6 class="event_menu_item" id="event_menu_share">Udostępnij</h6>
+                <h6 class="event_menu_item" id="event_menu_settings">Ustawienia</h6>
+            </div>
+
+{#            Gift section  #}
+            <div class="event_gifts event_section col-3" id="event_gifts">
+                {% for gift in event.gifts %}
+                    <div>
+                        <img src="{{ gift.photo }}" alt="Zdjęcie prezentu">
+                        <p>{{ gift.name }}</p>
+                        <div>
+                            <p>{{ gift.getSumOfDonations() }}</p>
+                            <p>{{ gift.price }}</p>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <p >Dodaj prezenty do swojego wydarzenia</p>
+                {% endfor %}
+            </div>
+
+{#            Donation section  #}
+
+            <div class="event_donations event_section" id="event_donations">
+                <p>donations</p>
+            </div>
+
+{#            Shere section     #}
+            <div class="event_share event_section container-fluid" id="event_share">
+                <div class="row">
+                    <div class=" col-4 event_qr_section">
+                        <h3 class="event_share_title">QR wydarzenia</h3>
+                        <div>
+                            {#                        tutaj będzie wygenerowany QR #}
+                            <div lass="event_share_icons">
+                                <img src="">
+                                <img src="{{asset('/build/images/fb.cd6f9276.svg')}}" class="event_share_icon">
+                                <img src="{{asset('/build/images/ig.44673bca.svg')}}" class="event_share_icon">
+                                <img src="{{asset('/build/images/tw.563d0bbf.svg')}}" class="event_share_icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8 event_share_medias">
+                        <h3 class="event_share_title">Linki i posty</h3>
+                        <div class="event_share_media">
+                            <img src="{{ asset('build/images/Link.8f46b480.svg') }}" class="event_share_icon" alt="">
+                            <h5>Kopiuj link</h5>
+                        </div>
+                        <div class="event_share_media">
+                            <img src="{{ asset('build/images/fb.cd6f9276.svg') }}" class="event_share_icon" alt="">
+                            <h5>Udostępnij post na Facebooku</h5>
+                        </div>
+                        <div class="event_share_media">
+                            <img src="{{ asset('build/images/ig.44673bca.svg') }}" class="event_share_icon" alt="">
+                            <h5>Udostępnij post na Instagramie</h5>
+                        </div>
+                        <div class="event_share_media">
+                            <img src="{{ asset('build/images/tw.563d0bbf.svg') }}" class="event_share_icon" alt="">
+                            <h5>Udostępnij post na Twitterze</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+{#            Settings section  #}
+            <div class="event_settings event_section" id="event_settings">
+                <div class="row">
+                    <div class=" col-4 event_PP_section">
+                        <h3 class="event_share_title">Zmień pakiet</h3>
+                        {#      tutaj będzie oferta lepszego pakietu      #}
+                        {% if availableNext %}
+                            <div class="plan plan-empty" id="">
+                                <h3> {{ nextPP.getName }}</h3>
+                                <h1>{{ nextPP.getPrice }} zł</h1>
+                                <ul>
+                                    <li>{{ nextPP.getAmountOfGifts }} prezenty</li>
+                                    {% if nextPP.qr %}
+                                    <li>Możliwość udostępniania wydarzenia za pomocą kodu QR</li>
+                                    {% endif %}
+                                    {% if nextPP.questionnaire %}
+                                    <li>Możliwość tworzenia ankiety z prezentami przed rozpoczęciem zbiórki</li>
+                                    {% endif %}
+                                </ul>
+                                <br>
+                                <button class="bright-btn">Zmień pakiet</button>
+                            </div>
+                        {% else %}
+                            <p>Wow posiadasz aktualnie najlepszy dostępny pakiet.</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-8 event_qr_section">
+                        {% if event.pricePoint.amountOfGifts - event.getAmountOfGifts != 0 %}
+                            <p>W obecnym pakiecie możesz jeszcze dodać {{ event.pricePoint.amountOfGifts - event.getAmountOfGifts }} prezenty</p>
+                            <a href="{{ path('app_gift_new') }}" class="dark-btn">Dodaj prezent</a><br><br><br>
+                        {% endif %}
+                        <p>Chcesz coś zmienić w swoim wydarzeniu?</p>
+                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="bright-btn">Edytuj wydarzenie</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{{ path('app_event_index') }}">back to list</a>
+
+            {{ include('event/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

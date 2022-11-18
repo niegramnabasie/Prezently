@@ -9,5 +9,10 @@
 import './styles/app.css';
 import './styles/res.css';
 
+//Compile new JavaScript file
+import './javascript/app.js'
+
 // start the Stimulus application
 import './bootstrap';
+
+

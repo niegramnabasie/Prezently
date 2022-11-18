@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Service\EventUtil;
+use ContainerFMt4QZO\getPricePointRepositoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,10 +44,13 @@ class EventController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
-    public function show(Event $event): Response
+    public function show(Event $event, EventUtil $util): Response
     {
+        $nextPP = $util->nextPricePoint($event);
         return $this->render('event/show.html.twig', [
             'event' => $event,
+            'nextPP' => $nextPP[0],
+            'availableNext' => $nextPP[1],
         ]);
     }
 

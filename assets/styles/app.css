@@ -40,10 +40,18 @@ h3{
 }
 
 h4{
-
+    font-family: Montserrat;
+    font-weight: 400;
+    letter-spacing: -0.02em;
 }
 
 h5{
+    font-family: Montserrat;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+h6{
     font-family: Montserrat;
     font-weight: 400;
     letter-spacing: -0.02em;
@@ -351,7 +359,7 @@ footer{
 }
 .plan{
     border-radius: 4px;
-    padding: 65px 35px;
+    padding: 45px 35px;
 }
 .plan ul{
     text-align: left;
@@ -459,4 +467,64 @@ footer{
 }
 .red_status{
     color: var(--red);
+}
+
+/*  Show event  */
+.event_menu{
+    display: flex;
+    border-bottom: 1px solid var(--brown40);
+    margin-bottom: 45px;
+}
+.event_menu button{
+    border: none;
+}
+.event_menu_item{
+    padding: 10px 25px;
+    color: var(--brown60);
+    margin: 0;
+    cursor: pointer;
+}
+.event_menu_item_active{
+    border-bottom: 1px solid var(--brown60);
+    font-weight: bold;
+}
+.event_section{
+    display: none;
+}
+.event_gifts{
+    display: block;
+}
+
+.event_share_title{
+    margin-bottom: 60px;
+}
+.event_share_icons{
+    display: flex;
+}
+.event_share_icon{
+    height: 35px;
+    width: 35px;
+}
+.event_qr_section{
+    border-right: 1px solid var(--brown40);
+    padding: 50px 95px;
+}
+.event_share_medias{
+    padding: 50px 95px;
+}
+.event_share_media{
+    display: flex;
+    gap: 38px;
+    margin-bottom: 38px;
+    vertical-align: middle;
+}
+.event_share_media h5{
+    line-height: 38px;
+    cursor: pointer;
+}
+
+.event_PP_section{
+    border-right: 1px solid var(--brown40);
+    text-align: center;
+    padding: 20px 40px;
 }
