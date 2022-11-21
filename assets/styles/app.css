@@ -454,7 +454,6 @@ footer{
 }
 .event_photo{
     margin-right: 85px;
-    max-height: 42vh;
 }
 #event_lastinfo{
     margin-bottom: 25px;
@@ -494,6 +493,34 @@ footer{
 .event_gifts{
     display: block;
 }
+.event_gift{
+    margin: 0 2.6vw;
+    padding: 0;
+}
+.event_gift_img{
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+.event_gift_prices{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--brown40);
+    margin-bottom: 16px;
+}
+#actualprice{
+    color: var(--brown60);
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+#endprice{
+    color: var(--brown100);
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.event_gift_donation_button{
+    padding-left: 9.19vw;
+    padding-right: 9.19vw;
+}
 
 .event_share_title{
     margin-bottom: 60px;
@@ -527,4 +554,11 @@ footer{
     border-right: 1px solid var(--brown40);
     text-align: center;
     padding: 20px 40px;
+}
+
+#form_gift_event{
+    display: none;
+}
+.form-label{
+    text-align: left;
 }

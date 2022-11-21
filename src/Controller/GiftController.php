@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Gift;
 use App\Form\GiftType;
+use App\Repository\EventRepository;
 use App\Repository\GiftRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,17 +22,19 @@ class GiftController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_gift_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, GiftRepository $giftRepository): Response
+    #[Route('/new/{eventId}', name: 'app_gift_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, GiftRepository $giftRepository, EventRepository $eventRepository, $eventId): Response
     {
+        $event = $eventRepository->find($eventId);
         $gift = new Gift();
         $form = $this->createForm(GiftType::class, $gift);
+        $form->get('event')->setData($event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $giftRepository->save($gift, true);
 
-            return $this->redirectToRoute('app_gift_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['id'=> $eventId], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('gift/new.html.twig', [

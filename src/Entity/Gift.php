@@ -105,7 +105,11 @@ class Gift
 
     public function getSumOfDonations(): ?float
     {
-        return round(array_sum($this->getDonations()));
+        $sum = 0;
+        foreach ($this->getDonations() as $donation){
+            $sum += $donation->amount;
+        }
+        return $sum;
     }
 
     public function addDonation(Donation $donation): self

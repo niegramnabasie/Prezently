@@ -140,7 +140,7 @@ class Event
         $amountOfDonations = 0;
         foreach ($this->gifts as $gift)
         {
-            $amountOfDonations += $gift->getAmogetAmountOfDonations();
+            $amountOfDonations += $gift->getAmountOfDonations();
         }
         return $amountOfDonations;
     }

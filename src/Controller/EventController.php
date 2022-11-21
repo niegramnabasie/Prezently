@@ -47,10 +47,12 @@ class EventController extends AbstractController
     public function show(Event $event, EventUtil $util): Response
     {
         $nextPP = $util->nextPricePoint($event);
+        $isUserACreator = $util->isUserACreator($event);
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'nextPP' => $nextPP[0],
             'availableNext' => $nextPP[1],
+            'isUserACreator' => $isUserACreator,
         ]);
     }
 

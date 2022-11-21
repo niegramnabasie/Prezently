@@ -14,7 +14,7 @@
 {#            Główne informacje o wydarzeniu    #}
 
             <div class="event">
-                <img class="event_photo col-4" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
+                <img class="event_photo col-4 img-fluid" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
                 <div class="col-6">
                     <h5 class="event_title ">{{ event.description }}</h5>
                     <div class="event_info">
@@ -42,24 +42,30 @@
                 <h6 class="event_menu_item event_menu_item_active" id="event_menu_gifts">Prezenty</h6>
                 <h6 class="event_menu_item" id="event_menu_donations">Wpłaty</h6>
                 <h6 class="event_menu_item" id="event_menu_share">Udostępnij</h6>
+                {% if isUserACreator %}
                 <h6 class="event_menu_item" id="event_menu_settings">Ustawienia</h6>
+                {% endif %}
             </div>
 
 {#            Gift section  #}
-            <div class="event_gifts event_section col-3" id="event_gifts">
-                {% for gift in event.gifts %}
-                    <div>
-                        <img src="{{ gift.photo }}" alt="Zdjęcie prezentu">
-                        <p>{{ gift.name }}</p>
-                        <div>
-                            <p>{{ gift.getSumOfDonations() }}</p>
-                            <p>{{ gift.price }}</p>
+            <div class="event_gifts event_section row" id="event_gifts">
+                <div class="row">
+                    {% for gift in event.gifts %}
+                        <div class="col-3 event_gift">
+                            <img class="event_gift_img img-fluid" src="{{ asset('build/images/' ~ gift.getCategory().getImagePath() ) }}" alt="Zdjęcie prezentu">
+                            <h5 class="bold">{{ gift.name }}</h5>
+                            <div class="event_gift_prices">
+                                <p id="actualprice">{{ gift.getSumOfDonations() }}</p>
+                                <p id="endprice">{{ gift.price }}</p>
+                            </div>
+                            <a href="{{ path('app_donation_new') }}" class="dark-btn event_gift_donation_button">Wpłać</a>
                         </div>
-                    </div>
 
-                {% else %}
-                    <p >Dodaj prezenty do swojego wydarzenia</p>
-                {% endfor %}
+                    {% else %}
+                        <p >Dodaj prezenty do swojego wydarzenia</p>
+                    {% endfor %}
+                </div>
+
             </div>
 
 {#            Donation section  #}
@@ -107,11 +113,11 @@
 
 
 {#            Settings section  #}
+            {% if isUserACreator %}
             <div class="event_settings event_section" id="event_settings">
                 <div class="row">
                     <div class=" col-4 event_PP_section">
                         <h3 class="event_share_title">Zmień pakiet</h3>
-                        {#      tutaj będzie oferta lepszego pakietu      #}
                         {% if availableNext %}
                             <div class="plan plan-empty" id="">
                                 <h3> {{ nextPP.getName }}</h3>
@@ -133,19 +139,19 @@
                         {% endif %}
                     </div>
                     <div class="col-8 event_qr_section">
-                        {% if event.pricePoint.amountOfGifts - event.getAmountOfGifts != 0 %}
+                        {% if event.pricePoint.amountOfGifts - event.getAmountOfGifts > 0 %}
                             <p>W obecnym pakiecie możesz jeszcze dodać {{ event.pricePoint.amountOfGifts - event.getAmountOfGifts }} prezenty</p>
-                            <a href="{{ path('app_gift_new') }}" class="dark-btn">Dodaj prezent</a><br><br><br>
+                            <a href="{{ path('app_gift_new',{eventId: event.id}) }}" class="dark-btn">Dodaj prezent</a><br><br><br>
                         {% endif %}
                         <p>Chcesz coś zmienić w swoim wydarzeniu?</p>
                         <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="bright-btn">Edytuj wydarzenie</a>
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             <a href="{{ path('app_event_index') }}">back to list</a>
 
-            {{ include('event/_delete_form.html.twig') }}
         </div>
     </div>
 {% endblock %}

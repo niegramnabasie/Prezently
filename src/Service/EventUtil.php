@@ -49,4 +49,15 @@ class EventUtil
         return [$nextPricePoint, $availableNext] ;
     }
 
+    public function isUserACreator (Event $event)
+    {
+        $user = $this->security->getUser();
+        $isUserACreator = false;
+
+        if ($event->getUser() == $user){
+            $isUserACreator = true;
+        }
+        return $isUserACreator;
+    }
+
 }
