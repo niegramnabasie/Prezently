@@ -107,7 +107,7 @@ class Gift
     {
         $sum = 0;
         foreach ($this->getDonations() as $donation){
-            $sum += $donation->amount;
+            $sum += $donation->getAmount();
         }
         return $sum;
     }

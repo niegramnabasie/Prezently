@@ -14,7 +14,7 @@
             <p class="myevents_status_activ col-11">Aktywne</p>
             {% for event in events['activ'] %}
                 <div class="event">
-                    <img class="event_photo col-4" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
+                    <img class="event_photo col-4" src="{{ asset('uploads/images/' ~ event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
                     <div class="">
                         <h2 class="event_title ">{{ event.name }}</h2>
                         <div class="event_info">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="event_info" id="event_lastinfo">
                             <h5 class="bold">Data zakończenia</h5>
-                            <h5>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</h5>
+                            <h5>{{ event.endDate ? event.endDate|date('d-m-Y') : '' }}</h5>
                         </div>
                         <a class="event_btn bright-btn" href="{{ path('app_event_show', {'id': event.id}) }}">Więcej</a>
                     </div>
@@ -48,7 +48,7 @@
             <p class="myevents_status_inactiv col-11">Nieaktywne</p>
             {% for event in events['inactiv'] %}
                 <div class="event">
-                    <img class="event_photo col-4" id="event_inactive_photo" src="{{ asset(event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
+                    <img class="event_photo col-4" id="event_inactive_photo" src="{{ asset('uploads/images/' ~ event.photo) }}" alt="Zdjęcie do wydarzenia {{ event.name }}">
                     <div class="">
                         <h2 class="event_title ">{{ event.name }}</h2>
                         <div class="event_info">

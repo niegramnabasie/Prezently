@@ -6,6 +6,7 @@
     --green: #606C38;
     --red: #c73e1d;
     --darkgray: #6C757D;
+    --gray: #C3C3C3;
     --lightgray: #ADB5BD;
     --brown100: #99735F;
     --brown80: #C5A38B;
@@ -81,7 +82,6 @@ a{
     text-align: center;
 }
 .subtitle{
-    justify-content: center;
     text-align: center;
     display: flex;
 }
@@ -521,12 +521,18 @@ footer{
     padding-left: 9.19vw;
     padding-right: 9.19vw;
 }
+.event_gift_donation_buttons{
+    padding-left: 3.8vw;
+    padding-right: 3.8vw;
+}
 
 .event_share_title{
     margin-bottom: 60px;
+    text-align: center;
 }
 .event_share_icons{
     display: flex;
+    justify-content: space-around;
 }
 .event_share_icon{
     height: 35px;
@@ -535,6 +541,15 @@ footer{
 .event_qr_section{
     border-right: 1px solid var(--brown40);
     padding: 50px 95px;
+}
+.event_qr_code_container{
+    display: flex;
+    justify-content: center;
+}
+.event_qr_code{
+    border: 1px solid var(--black);
+    border-radius: 8px;
+    margin-bottom: 25px;
 }
 .event_share_medias{
     padding: 50px 95px;
@@ -561,4 +576,32 @@ footer{
 }
 .form-label{
     text-align: left;
+}
+
+.event_donation{
+    display: flex;
+    border-bottom: 0.5px solid var(--gray);
+    margin-top: 10px;
+}
+.event_donation p{
+    margin-bottom: 4px;
+}
+
+/*Tworzenie wydarzenia*/
+.create_event_info{
+    display: flex;
+}
+.create_event_plans{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0;
+    margin-bottom: 80px;
+}
+.create_event_plans div{
+    width: 28%;
+}
+.create_event_step{
+    margin-top: 80px;
+    margin-bottom: 80px;
 }

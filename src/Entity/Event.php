@@ -40,6 +40,9 @@ class Event
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Gift::class, orphanRemoval: true)]
     private Collection $gifts;
 
+    #[ORM\Column]
+    private ?bool $isPaid = null;
+
     public function __construct()
     {
         $this->gifts = new ArrayCollection();
@@ -170,5 +173,17 @@ class Event
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function isIsPaid(): ?bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(bool $isPaid): self
+    {
+        $this->isPaid = $isPaid;
+
+        return $this;
     }
 }

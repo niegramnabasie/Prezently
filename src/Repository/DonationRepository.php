@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Donation;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,17 @@ class DonationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Donation::class);
+    }
+
+    public function findAllDonationsForEvents ($gifts)
+    {
+        $qb = $this->createQueryBuilder('d');
+        $qb->where('d.gift IN (:gifts)')
+            ->setParameter('gifts', $gifts);
+
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return $result;
     }
 
     public function save(Donation $entity, bool $flush = false): void

@@ -18,12 +18,16 @@ class GiftType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class,)
+            ->add('name', TextType::class,[
+                'label'=>'Nazwa'
+            ])
             ->add('price', MoneyType::class, [
                 'currency' => 'PLN',
+                'label' => 'Cena',
             ])
             ->add('event')
             ->add('category', EntityType::class, [
+                'label'=>'Kategoria',
                 'class' => GiftCategory::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')

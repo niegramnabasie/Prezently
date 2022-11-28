@@ -1,11 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Event{% endblock %}
+{% block title %}Prezently - Tworzenie wydarzenia{% endblock %}
 
 {% block body %}
-    <h1>Create new Event</h1>
+<div class="content">
+    <div class="subtitle row">
+        <div class="subtitle_btn col-3">
+            <a href="{{ path('app_event_index') }}"><p><- Powrót do moich wydarzeń</p></a>
+        </div>
+        <h1 class="col-6 title">Tworzenie wydarzenia</h1>
+        <h4 class="create_event_step">Krok 1.  Podstawowe informacje</h4>
+    </div>
+    <div class="sing-in-up">
+        {{ form_start(form) }}
+        <div class="create_event_info row">
+            <div class="offset-1 col-4">
+                {{ form_row(form.photo) }}
+            </div>
+            <div class="offset-1 col-6">
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.endDate) }}
+            </div>
+        </div>
 
-    {{ include('event/_form.html.twig') }}
+        <h4 class="create_event_step">Krok 2.  Wybierz pakiet</h4>
+        <div class="create_event_plans">
+            <div class="plan plan-empty">
+                <h3>Free (php)</h3>
+                <h1>0 zł</h1>
+                <ul>
+                    <li>2 prezenty</li>
+                    <li>Udostępnianie zbiórki przez link</li>
+                </ul>
+            </div>
+            <div class="plan plan-solid">
+                <h3>Plus (php)</h3>
+                <h1>5 zł</h1>
+                <ul>
+                    <li>4 prezenty</li>
+                    <li>Możliwość udostępniania wydarzenia za pomocą kodu QR oraz linku</li>
+                </ul>
+            </div>
+            <div class="plan plan-empty">
+                <h3>Pro (php)</h3>
+                <h1>15 zł</h1>
+                <ul>
+                    <li>50 prezentów</li>
+                    <li>Udostępnianie wydarzenia za pomocą kodu QR oraz linku</li>
+                    <li>Możliwość tworzenia ankiety z prezentami przed rozpoczęciem zbiórki</li>
+                </ul>
+            </div>
+        </div>
+        <div class="offset-4 col-4">
+            {{ form_row(form.pricePoint) }}
+        </div>
+        <div id="form_gift_event">
+            {{ form_row(form.user) }}
+            {{ form_row(form.isPaid) }}
+        </div>
+        <div class="offset-4 col-4">
+            <button type="submit" class="dark-btn">Dodaj</button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+</div>
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
 {% endblock %}

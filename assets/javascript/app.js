@@ -1,4 +1,16 @@
 
+// function disableSection() {
+//     var anonimCheckbox = document.getElementById('anonimSwitch');
+//     var inputName = document.getElementById('donation_donorName');
+//     inputName.disabled = anonimCheckbox.checked;
+//     if ( anonimCheckbox.checked){
+//         inputName.value = 'Anonimowa wpłata';
+//     }else {
+//         inputName.value = '';
+//     }
+// }
+
+
 let visibleSection = document.getElementById('event_gifts');
 let activMenuItem = document.getElementById('event_menu_gifts');
 
@@ -55,27 +67,3 @@ event_menu_settings.addEventListener('click', function displaySettings(){
     activMenuItem = this;
 });
 
-// function displaySection() {
-//     alert('123456');
-    // if (section === 'gifts'){
-    //     document.getElementById('event_gifts').style.display = "block";
-    //     document.getElementById('event_donations').style.display = "none";
-    //     document.getElementById('event_share').style.display = "none";
-    //     document.getElementById('event_settings').style.display = "none";
-    // } else if (section === 'donations'){
-    //     document.getElementById('event_gifts').style.display = "none";
-    //     document.getElementById('event_donations').style.display = "block";
-    //     document.getElementById('event_share').style.display = "none";
-    //     document.getElementById('event_settings').style.display = "none";
-    // } else if (section === 'share'){
-    //     document.getElementById('event_gifts').style.display = "none";
-    //     document.getElementById('event_donations').style.display = "none";
-    //     document.getElementById('event_share').style.display = "block";
-    //     document.getElementById('event_settings').style.display = "none";
-    // }else if (section === 'settings'){
-    //     document.getElementById('event_gifts').style.display = "none";
-    //     document.getElementById('event_donations').style.display = "none";
-    //     document.getElementById('event_share').style.display = "none";
-    //     document.getElementById('event_settings').style.display = "block";
-    // }
-// }

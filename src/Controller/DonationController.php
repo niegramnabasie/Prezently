@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Donation;
 use App\Form\DonationType;
 use App\Repository\DonationRepository;
+use App\Repository\GiftRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,22 +22,26 @@ class DonationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_donation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DonationRepository $donationRepository): Response
+    #[Route('/new/{giftId}', name: 'app_donation_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, DonationRepository $donationRepository, GiftRepository $giftRepository, $giftId): Response
     {
+        $gift = $giftRepository->find($giftId);
+
         $donation = new Donation();
         $form = $this->createForm(DonationType::class, $donation);
+        $form->get('gift')->setData($gift);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $donationRepository->save($donation, true);
 
-            return $this->redirectToRoute('app_donation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['id'=> $gift->getEvent()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('donation/new.html.twig', [
             'donation' => $donation,
             'form' => $form,
+            'gift' => $gift,
         ]);
     }
 

@@ -1,11 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Donation{% endblock %}
+{% block title %}Prezently - płatność{% endblock %}
 
 {% block body %}
-    <h1>Create new Donation</h1>
-
-    {{ include('donation/_form.html.twig') }}
-
-    <a href="{{ path('app_donation_index') }}">back to list</a>
+    <div class="content">
+        <div class="subtitle row">
+            <div class="subtitle_btn col-3">
+                <a href="{{ path('app_event_show', {id: gift.getEvent().getId()}) }}"><p><- Powrót do wydarzenia</p></a>
+            </div>
+            <h1 class="title col-6">Dorzuć się do prezentu</h1>
+        </div>
+        <div class="row">
+            <div class="offset-3 col-2">
+                <img class="event_gift_img img-fluid" src="{{ asset('build/images/' ~ gift.getCategory().getImagePath() ) }}" alt="Zdjęcie prezentu">
+                <h5 class="bold">{{ gift.name }}</h5>
+                <div class="event_gift_prices">
+                    <p id="actualprice">{{ gift.getSumOfDonations() }}</p>
+                    <p id="endprice">{{ gift.price }}</p>
+                </div>
+            </div>
+            <div class="sing-in-up col-4">
+                {{ form_start(form) }}
+                {{ form_row(form.donorName) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.amount) }}
+                <div id="form_gift_event">
+                    {{ form_row(form.gift) }}
+                </div>
+                <button type="submit" class="dark-btn">Wpłać</button>
+                {{ form_end(form)}}
+            </div>
+        </div>
+    </div>
 {% endblock %}

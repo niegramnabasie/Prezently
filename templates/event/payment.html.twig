@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Płatność{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="subtitle row">
+        <h1 class="offset-2 col-8 title">Zapłać za wybrany pakiet</h1>
+    </div>
+    <div class="sing-in-up offset-4 col-4">
+        {{ form_start(form) }}
+        {{ form_row(form.price) }}
+        <div class="">
+            <button type="submit" class="dark-btn">Zapłać</button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+</div>
+{% endblock %}

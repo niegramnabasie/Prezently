@@ -4,8 +4,13 @@
 
 {% block body %}
     <div class="content">
+        <div class="subtitle row">
+            <div class="subtitle_btn col-3">
+                <a href="{{ path('app_event_show', {id: event.id}) }}"><p><- Powrót do wydarzenia</p></a>
+            </div>
+            <h1 class="title col-6">Dodaj prezent</h1>
+        </div>
         <div class="sing-in-up offset-3 col-6">
-            <h1 class="title">Dodaj prezent</h1>
             {{ form_start(form) }}
             {{ form_row(form.name) }}
             {{ form_row(form.price) }}

@@ -4,8 +4,10 @@ namespace App\Service;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Repository\DonationRepository;
 use App\Repository\PricePointRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use phpDocumentor\Reflection\Types\Boolean;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Component\Security\Core\Security;
 use App\Repository\EventRepository;
@@ -15,12 +17,14 @@ class EventUtil
 {
     private EventRepository $eventRepository;
     private PricePointRepository $pricePointRepository;
+    private DonationRepository $donationRepository;
     private $security;
 
-    public function __construct(EventRepository $eventRepository, PricePointRepository $pricePointRepository, Security $security)
+    public function __construct(EventRepository $eventRepository, PricePointRepository $pricePointRepository, DonationRepository $donationRepository, Security $security)
     {
         $this->eventRepository = $eventRepository;
         $this->pricePointRepository = $pricePointRepository;
+        $this->donationRepository = $donationRepository;
         $this->security = $security;
     }
 
@@ -60,4 +64,25 @@ class EventUtil
         return $isUserACreator;
     }
 
+    public function getDonationsForEvent(Event $event)
+    {
+        $gifts = $event->getGifts();
+        return $this->donationRepository->findAllDonationsForEvents($gifts);
+    }
+
+    public function setIsPaid(Event $event, bool $isPaid):void
+    {
+        $event->setIsPaid($isPaid);
+        $this->eventRepository->save($event, true);
+    }
+
+    public function isEventActive(Event $event){
+        $today = ( new \DateTime() )->format('Y-m-d');
+        if ($event->getEndDate()->format('Y-m-d') < $today){
+            return false;
+        }
+        elseif ($event->getEndDate()->format('Y-m-d') >= $today){
+            return true;
+        }
+    }
 }

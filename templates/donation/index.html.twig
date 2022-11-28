@@ -35,5 +35,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_donation_new') }}">Create new</a>
+    <a href="{{ path('app_donation_new', {'giftId': gift.id}) }}">Create new</a>
 {% endblock %}
