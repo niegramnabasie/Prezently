@@ -28,7 +28,7 @@ class EventUtil
         $this->security = $security;
     }
 
-    public function getEventsByUser ()
+    public function getEventsByUser()
     {
         $user = $this->security->getUser();
 

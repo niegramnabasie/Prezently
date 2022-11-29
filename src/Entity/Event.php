@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Gift;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Gift;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -42,6 +42,9 @@ class Event
 
     #[ORM\Column]
     private ?bool $isPaid = null;
+
+    #[ORM\OneToOne(mappedBy: 'eventId', targetEntity: Questionnaire::class, orphanRemoval: true)]
+    private ?Questionnaire $questionnaire = null;
 
     public function __construct()
     {
@@ -183,6 +186,23 @@ class Event
     public function setIsPaid(bool $isPaid): self
     {
         $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(Questionnaire $questionnaire): self
+    {
+        // set the owning side of the relation if necessary
+        if ($questionnaire->getEventId() !== $this) {
+            $questionnaire->setEventId($this);
+        }
+
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

@@ -111,7 +111,7 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
 
-            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['id'=>$event->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('event/edit.html.twig', [
@@ -131,11 +131,9 @@ class EventController extends AbstractController
     }
 
     #[Route('/{id}/payment', name: 'app_event_payment', methods: ['GET','POST'])]
-    public function payment(Request $request, Event $event, EventRepository $eventRepository, EventUtil $util, Security $security): Response
+    public function payment(Request $request, Event $event, EventRepository $eventRepository, EventUtil $util, Security $security, PricePointRepository $pricePointRepository): Response
     {
-        $this->security = $security;
-        $user = $this->security->getUser();
-        if ($event->isIsPaid() or $util->isUserACreator($event)){
+        if ($event->isIsPaid() or !$util->isUserACreator($event)){
             return $this->redirectToRoute('app_event_show', ['id'=> $event->getId()], Response::HTTP_SEE_OTHER);
         }
         $form = $this->createFormBuilder()
@@ -152,6 +150,12 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $util->setIsPaid($event,true);
+
+            if ($event->getPricePoint() === $pricePointRepository->find(3)){
+
+                return $this->redirectToRoute('app_questionnaire_new', ['eventId'=> $event->getId()], Response::HTTP_SEE_OTHER);
+            }
+
             return $this->redirectToRoute('app_event_show', ['id'=>$event->getId()], Response::HTTP_SEE_OTHER);
         }
 

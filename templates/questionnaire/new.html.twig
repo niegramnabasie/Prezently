@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Questionnaire{% endblock %}
+
+{% block body %}
+    <div  class="content">
+        <div class="subtitle row">
+            <h2>Czy chcesz utworzyć ankietę?</h2>
+            <h4>Dzięki wybraniu pakietu Pro masz możliwość utworzenia ankiety przed rozpoczęciem Twojego wydarzenia</h4>
+            <h5>Jeżli nie możesz się zdecydować które prezenty umieścić w zbiórce możesz utworzyć ankietę w której zapytasz znajomych o ich zdanie.</h5>
+        </div>
+        <div class="sing-in-up offset-4 col-4">
+            {{ form_start(form) }}
+            {{ form_row(form.endDate) }}
+            {{ form_row(form.eventId) }}
+            <div class="form_gift_event">
+
+            </div>
+            <button type="submit" class="dark-btn">Zapisz</button>
+            {{ form_end(form) }}
+            <a href="{{ path('app_questionnaire_index') }}">back to list</a>
+        </div>
+
+    </div>
+
+{% endblock %}
