@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit GiftInQuestionnaire{% endblock %}
+
+{% block body %}
+    <h1>Edit GiftInQuestionnaire</h1>
+
+    {{ include('gift_in_questionnaire/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_gift_in_questionnaire_index') }}">back to list</a>
+
+    {{ include('gift_in_questionnaire/_delete_form.html.twig') }}
+{% endblock %}

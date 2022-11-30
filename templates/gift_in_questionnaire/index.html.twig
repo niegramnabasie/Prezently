@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GiftInQuestionnaire index{% endblock %}
+
+{% block body %}
+    <h1>GiftInQuestionnaire index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>VoteAmount</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gift_in_questionnaire in gift_in_questionnaires %}
+            <tr>
+                <td>{{ gift_in_questionnaire.id }}</td>
+                <td>{{ gift_in_questionnaire.name }}</td>
+                <td>{{ gift_in_questionnaire.price }}</td>
+                <td>{{ gift_in_questionnaire.voteAmount }}</td>
+                <td>
+                    <a href="{{ path('app_gift_in_questionnaire_show', {'id': gift_in_questionnaire.id}) }}">show</a>
+                    <a href="{{ path('app_gift_in_questionnaire_edit', {'id': gift_in_questionnaire.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_gift_in_questionnaire_new') }}">Create new</a>
+{% endblock %}

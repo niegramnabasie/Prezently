@@ -7,6 +7,7 @@ use App\Form\QuestionnaireType;
 use App\Repository\EventRepository;
 use App\Repository\PricePointRepository;
 use App\Repository\QuestionnaireRepository;
+use App\Service\EventUtil;
 use App\Service\QuestionnaireUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,10 +32,12 @@ class QuestionnaireController extends AbstractController
         if ($event->getPricePoint() !== $pricePointRepository->find(3)){
             return $this->redirectToRoute('app_event_show', ['id'=> $event->getId()], Response::HTTP_SEE_OTHER);
         }
+
         $questionnaire = new Questionnaire();
 
+        $qEndDate = $questionnaireUtil->setQuestionnaireEndDate($event);
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
-        $form->get('endDate')->setData($questionnaireUtil->setQuestionnaireEndDate($event));
+        $form->get('endDate')->setData($qEndDate);
         $form->get('eventId')->setData($event);
 
         $form->handleRequest($request);
@@ -42,20 +45,27 @@ class QuestionnaireController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $questionnaireRepository->save($questionnaire, true);
 
-            return $this->redirectToRoute('app_event_show', ['id'=> $event->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_questionnaire_show', ['id'=> $questionnaire->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('questionnaire/new.html.twig', [
             'questionnaire' => $questionnaire,
             'form' => $form,
+            'qEndDate'=>$qEndDate->format('d-m-Y'),
+            'eventId' => $eventId
         ]);
     }
 
     #[Route('/{id}', name: 'app_questionnaire_show', methods: ['GET'])]
-    public function show(Questionnaire $questionnaire): Response
+    public function show(Questionnaire $questionnaire, EventUtil $eventUtil): Response
     {
+        //wyswietlanie prezentów i sama ankieta, przekierowanie do dodawania prezentów
+        $event = $questionnaire->getEventId();
+        $isUserACreator = $eventUtil->isUserACreator($event);
+
         return $this->render('questionnaire/show.html.twig', [
             'questionnaire' => $questionnaire,
+            'isUserACreator'=>$isUserACreator,
         ]);
     }
 

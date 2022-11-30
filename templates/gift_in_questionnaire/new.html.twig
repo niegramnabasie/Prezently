@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prezently - Nowy prezent w ankiecie{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div class="subtitle row">
+            <div class="subtitle_btn col-3">
+                <a href="{{ path('app_questionnaire_show', {id: questionnaire.id}) }}"><p><- Powrót do ankiety</p></a>
+            </div>
+            <h1 class="title col-6">Dodaj prezent</h1>
+        </div>
+        <div class="sing-in-up offset-3 col-6">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.price) }}
+            {{ form_row(form.category) }}
+            <div id="form_gift_event">
+                {{ form_row(form.questionnaireId) }}
+                {{ form_row(form.voteAmount) }}
+            </div>
+            <button type="submit" class="dark-btn">Dodaj</button>
+            {{ form_end(form)}}
+        </div>
+    </div>
+
+{#    {{ include('gift_in_questionnaire/_form.html.twig') }}#}
+
+    <a href="{{ path('app_gift_in_questionnaire_index') }}">back to list</a>
+{% endblock %}

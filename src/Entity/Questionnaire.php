@@ -90,4 +90,10 @@ class Questionnaire
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        $name = 'Ankieta wydarzenia '.$this->getEventId()->getName();
+        return $name;
+    }
 }

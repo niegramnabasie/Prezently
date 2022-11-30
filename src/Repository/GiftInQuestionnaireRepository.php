@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Event;
 use App\Entity\GiftInQuestionnaire;
+use App\Entity\Questionnaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +22,16 @@ class GiftInQuestionnaireRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, GiftInQuestionnaire::class);
     }
+//
+//    public function getAllGiftsInQuestionnaire(Questionnaire $questionnaire){
+//        $qb = $this->createQueryBuilder('g');
+//        $qb->where('g.questionnaireId = :questionnaire')
+//            ->setParameter('questionnaire', $questionnaire);
+//
+//        $query = $qb->getQuery();
+//        $result = $query->getResult();
+//        return $result;
+//    }
 
     public function save(GiftInQuestionnaire $entity, bool $flush = false): void
     {

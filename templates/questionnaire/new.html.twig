@@ -3,22 +3,32 @@
 {% block title %}New Questionnaire{% endblock %}
 
 {% block body %}
-    <div  class="content">
-        <div class="subtitle row">
-            <h2>Czy chcesz utworzyć ankietę?</h2>
-            <h4>Dzięki wybraniu pakietu Pro masz możliwość utworzenia ankiety przed rozpoczęciem Twojego wydarzenia</h4>
-            <h5>Jeżli nie możesz się zdecydować które prezenty umieścić w zbiórce możesz utworzyć ankietę w której zapytasz znajomych o ich zdanie.</h5>
+    <div  class="content row">
+        <div class="subtitle row title">
+            <h2>Czy chcesz utworzyć ankietę?</h2><br><br>
+            <h4>Dzięki wybraniu pakietu Pro masz możliwość utworzenia ankiety przed rozpoczęciem Twojego wydarzenia</h4><br><br>
+            <h5>Jeżli nie możesz się zdecydować które prezenty umieścić w zbiórce możesz utworzyć ankietę, w której zapytasz znajomych o ich zdanie.</h5>
         </div>
-        <div class="sing-in-up offset-4 col-4">
-            {{ form_start(form) }}
-            {{ form_row(form.endDate) }}
-            {{ form_row(form.eventId) }}
-            <div class="form_gift_event">
-
+        <div class="sing-in-up questionnaire offset-1 col-5">
+            <div>
+                <h4 class="">Tak chcę utworzyć ankietę.</h4>
+                <p>Czas trwania ankiety zależy od daty końcowej wydarzenia</p><br>
+                <h5>Data zakończenia ankiety: {{ qEndDate }}</h5>
+                {{ form_start(form) }}
+                <div id="form_gift_event">
+                    {{ form_row(form.endDate) }}
+                    {{ form_row(form.eventId) }}
+                </div>
+                <button type="submit" class="dark-btn">Zapisz</button>
+                {{ form_end(form) }}
             </div>
-            <button type="submit" class="dark-btn">Zapisz</button>
-            {{ form_end(form) }}
-            <a href="{{ path('app_questionnaire_index') }}">back to list</a>
+        </div>
+        <div class="sing-in-up no_questionnaire col-5">
+            <div>
+                <h4 class="title">Nie chcę tworzyć ankiety.</h4>
+                <a href="{{ path('app_event_show', {'id': eventId}) }}" class="bright-btn">Przejdź do wydarzenia</a>
+            </div>
+
         </div>
 
     </div>
