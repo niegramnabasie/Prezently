@@ -35,7 +35,7 @@ class DonationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $donationRepository->save($donation, true);
 
-            return $this->redirectToRoute('app_event_show', ['id'=> $gift->getEvent()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['selector'=> $gift->getEvent()->getSelector()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('donation/new.html.twig', [
@@ -48,9 +48,8 @@ class DonationController extends AbstractController
     #[Route('/{id}', name: 'app_donation_show', methods: ['GET'])]
     public function show(Donation $donation): Response
     {
-        return $this->render('donation/show.html.twig', [
-            'donation' => $donation,
-        ]);
+        throw $this->createNotFoundException('Strona nie istnieje');
+
     }
 
     #[Route('/{id}/edit', name: 'app_donation_edit', methods: ['GET', 'POST'])]

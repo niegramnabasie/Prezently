@@ -33,7 +33,7 @@
                             <h5 class="bold">Data zakończenia</h5>
                             <h5>{{ event.endDate ? event.endDate|date('d-m-Y') : '' }}</h5>
                         </div>
-                        <a class="event_btn bright-btn" href="{{ path('app_event_show', {'id': event.id}) }}">Więcej</a>
+                        <a class="event_btn bright-btn" href="{{ path('app_event_show', {'selector': event.selector}) }}">Więcej</a>
                     </div>
                 </div>
                 {#            <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>#}
@@ -67,7 +67,7 @@
                             <h5 class="bold">Data zakończenia</h5>
                             <h5>{{ event.endDate ? event.endDate|date('Y-m-d') : '' }}</h5>
                         </div>
-                        <a class="event_btn bright-btn" href="{{ path('app_event_show', {'id': event.id}) }}">Więcej</a>
+                        <a class="event_btn bright-btn" href="{{ path('app_event_show', {'selector': event.selector}) }}">Więcej</a>
                     </div>
                 </div>
                 {#            <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>#}

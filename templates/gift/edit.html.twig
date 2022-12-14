@@ -7,9 +7,12 @@
     <div class="content">
         <div class="subtitle row">
             <div class="subtitle_btn col-3">
-                <a href="{{ path('app_event_show', {id: event.id}) }}"><p><- Powrót do wydarzenia</p></a>
+                <a href="{{ path('app_event_show', {'selector': event.selector}) }}"><p><- Powrót do wydarzenia</p></a>
             </div>
             <h1 class="title col-6">Edytuj prezent</h1>
+            <div class="subtitle_btn col-3">
+                {{ include('gift/_delete_form.html.twig') }}
+            </div>
         </div>
         <div class="sing-in-up offset-3 col-6">
             {{ form_start(form) }}
@@ -19,12 +22,11 @@
             <div id="form_gift_event">
                 {{ form_row(form.event) }}
             </div>
-            <button type="submit" class="dark-btn">Edytuj</button>
+            <button type="submit" class="dark-btn">Zapisz</button>
             {{ form_end(form)}}
         </div>
     </div>
 
-    <a href="{{ path('app_gift_index') }}">back to list</a>
 
-    {{ include('gift/_delete_form.html.twig') }}
+
 {% endblock %}

@@ -66,4 +66,18 @@ event_menu_settings.addEventListener('click', function displaySettings(){
     visibleSection=settings;
     activMenuItem = this;
 });
+(function () {
+    function copyToClipboard() {
+        var dummy = document.createElement('input'),
+            text = window.location.href;
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+    }
+
+    document.getElementById('buttonCopy').addEventListener('click', copyToClipboard, true);
+})()
+
 

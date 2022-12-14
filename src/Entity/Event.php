@@ -46,6 +46,9 @@ class Event
     #[ORM\OneToOne(mappedBy: 'eventId', targetEntity: Questionnaire::class, orphanRemoval: true)]
     private ?Questionnaire $questionnaire = null;
 
+    #[ORM\Column(length: 12)]
+    private ?string $selector = null;
+
     public function __construct()
     {
         $this->gifts = new ArrayCollection();
@@ -203,6 +206,18 @@ class Event
         }
 
         $this->questionnaire = $questionnaire;
+
+        return $this;
+    }
+
+    public function getSelector(): ?string
+    {
+        return $this->selector;
+    }
+
+    public function setSelector(string $selector): self
+    {
+        $this->selector = $selector;
 
         return $this;
     }

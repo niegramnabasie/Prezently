@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Questionnaire;
+use App\Form\GiftQuestionnaireForm;
 use App\Form\QuestionnaireType;
 use App\Repository\EventRepository;
+use App\Repository\GiftInQuestionnaireRepository;
 use App\Repository\PricePointRepository;
 use App\Repository\QuestionnaireRepository;
 use App\Service\EventUtil;
+use App\Service\GiftInQuestionnaireUtil;
 use App\Service\QuestionnaireUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +34,7 @@ class QuestionnaireController extends AbstractController
     {
         $event = $eventRepository->find($eventId);
         if ($event->getPricePoint() !== $pricePointRepository->find(3)){
-            return $this->redirectToRoute('app_event_show', ['id'=> $event->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['selector'=> $event->getSelector()], Response::HTTP_SEE_OTHER);
         }
 
         $questionnaire = new Questionnaire();
@@ -56,15 +60,44 @@ class QuestionnaireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_questionnaire_show', methods: ['GET'])]
-    public function show(Questionnaire $questionnaire, EventUtil $eventUtil): Response
+    #[Route('/{id}', name: 'app_questionnaire_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, $id, Questionnaire $questionnaire, EventUtil $eventUtil,
+                         QuestionnaireRepository $questionnaireRepository,
+                         GiftInQuestionnaireUtil $giftInQuestionnaireUtil): Response
     {
         //wyswietlanie prezentów i sama ankieta, przekierowanie do dodawania prezentów
         $event = $questionnaire->getEventId();
         $isUserACreator = $eventUtil->isUserACreator($event);
 
-        return $this->render('questionnaire/show.html.twig', [
+        $form = $this->createForm(GiftQuestionnaireForm::class, null, [
+            'Questionnaire'=>$questionnaire
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($request->cookies->has('voted')){
+                $this->addFlash('warning', 'Mamy już twój głos, wróć do nas po zakończeniu ankiety');
+            }
+            else{
+                $response = new Response();
+                $response->headers->setCookie(Cookie::create('voted', 'true'));
+                $response->send();
+
+                $this->addFlash('success', 'Iiii poceciał, twój głos został wysłany, na dzisiaj to wszystko 
+                wróć do nas kiedy ankieta się zakończy');
+
+                $array = $form->get('gifts')->getData();
+                $giftInQuestionnaireUtil->addVotes($array);
+
+                //return $this->redirectToRoute('app_questionnaire_show', ['id'=>$id], Response::HTTP_SEE_OTHER);
+            }
+
+        }
+
+        return $this->renderForm('questionnaire/show.html.twig', [
             'questionnaire' => $questionnaire,
+            'form' => $form,
             'isUserACreator'=>$isUserACreator,
         ]);
     }

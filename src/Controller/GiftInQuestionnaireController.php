@@ -28,6 +28,7 @@ class GiftInQuestionnaireController extends AbstractController
         $questionnaire = $questionnaireRepository->find($questionnaireId);
 
         $giftInQuestionnaire = new GiftInQuestionnaire();
+
         $form = $this->createForm(GiftInQuestionnaireType::class, $giftInQuestionnaire);
         $form->get('questionnaireId')->setData($questionnaire);
         $form->get('voteAmount')->setData(0);

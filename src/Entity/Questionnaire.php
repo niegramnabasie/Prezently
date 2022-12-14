@@ -27,6 +27,9 @@ class Questionnaire
     #[ORM\OneToMany(mappedBy: 'questionnaireId', targetEntity: GiftInQuestionnaire::class, orphanRemoval: true)]
     private Collection $giftsInQuestionnaire;
 
+    #[ORM\Column]
+    private ?int $endGiftAmount = null;
+
     public function __construct()
     {
         $this->giftsInQuestionnaire = new ArrayCollection();
@@ -95,5 +98,17 @@ class Questionnaire
     {
         $name = 'Ankieta wydarzenia '.$this->getEventId()->getName();
         return $name;
+    }
+
+    public function getEndGiftAmount(): ?int
+    {
+        return $this->endGiftAmount;
+    }
+
+    public function setEndGiftAmount(int $endGiftAmount): self
+    {
+        $this->endGiftAmount = $endGiftAmount;
+
+        return $this;
     }
 }

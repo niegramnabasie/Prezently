@@ -51,6 +51,17 @@ class GiftInQuestionnaireRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOrderedByVotesAmount(Questionnaire $questionnaire){
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.questionnaireId = :val')
+            ->setParameter('val', $questionnaire)
+            ->orderBy('q.voteAmount', 'DESC')
+            ->setMaxResults($questionnaire->getEndGiftAmount())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return GiftInQuestionnaire[] Returns an array of GiftInQuestionnaire objects
 //     */

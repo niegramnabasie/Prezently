@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Płatność{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="subtitle row">
+        <div class="subtitle_btn col-2">
+            <a href="{{ path('app_event_show', {'id':event.id}) }}"><p><- Powrót do wydarzenia</p></a>
+        </div>
+        <div class="col-8 title">
+            <h1 class="title">Zapłać za zmianę pakietu</h1>
+            <h4>Zmiana z pakietu {{ event.getPricePoint.getName()}} na {{ nextPP.getName()}}</h4>
+        </div>
+
+    </div>
+    <div class="sing-in-up offset-4 col-4">
+        {{ form_start(form) }}
+        {{ form_row(form.price) }}
+        <div class="">
+            <button type="submit" class="dark-btn">Zapłać</button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+</div>
+{% endblock %}

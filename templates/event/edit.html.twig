@@ -3,11 +3,32 @@
 {% block title %}Edit Event{% endblock %}
 
 {% block body %}
-    <h1>Edit Event</h1>
+<div class="content">
+    <div class="subtitle row">
+        <div class="subtitle_btn col-3">
+            <a href="{{ path('app_event_show', {'id':event.id}) }}"><p><- Powrót do wydarzenia</p></a>
+        </div>
+        <h1 class="col-6 title">Edycja wydarzenia</h1>
+        <div class="subtitle_btn col-3">
+            {{ include('event/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <div class="sing-in-up offset-3 col-6">
+        {{ form_start(form) }}
+        {{ form_row(form.name)}}
+        {{ form_row(form.description)}}
+        {{ form_row(form.endDate)}}
+        {{ form_row(form.photo)}}
+        <div id="form_gift_event">
+            {{ form_row(form.user) }}
+            {{ form_row(form.isPaid) }}
+            {{ form_row(form.pricePoint) }}
+            {{ form_row(form.selector) }}
+        </div>
+        <button type="submit" class="dark-btn">Zapisz</button>
+        {{ form_end(form) }}
+    </div>
 
-    {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+</div>
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
-
-    {{ include('event/_delete_form.html.twig') }}
 {% endblock %}

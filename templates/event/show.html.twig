@@ -2,7 +2,19 @@
 
 {% block title %}Prezently - {{ event.name }}{% endblock %}
 
+{% block javascript %}
+    {{ parent() }}
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v15.0" nonce="DRCadskl"></script>
+{% endblock %}
+
 {% block body %}
+
+    {% for message in app.flashes('fail') %}
+        <div class="text-center alert alert-warning ">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="content">
         <div class="subtitle row">
             <div class="subtitle_btn col-3">
@@ -35,10 +47,10 @@
                         <h5 class="red_status">Nieaktywne</h5>
                         {% endif %}
                     </div>
-                    <div class="event_info">
-                        <h5 class="bold">Opłacone?:</h5>
-                        <h5>{{ event.isIsPaid()? 'true' : 'false'}}</h5>
-                    </div>
+{#                    <div class="event_info">#}
+{#                        <h5 class="bold">Opłacone?:</h5>#}
+{#                        <h5>{{ event.isIsPaid()? 'true' : 'false'}}</h5>#}
+{#                    </div>#}
                     <div class="event_info" id="event_lastinfo">
                         <h5 class="bold">Data zakończenia</h5>
                         <h5>{{ event.endDate ? event.endDate|date('d-m-Y') : '' }}</h5>
@@ -112,7 +124,7 @@
                             <p class="col-1">{{ donation.amount }}</p>
                         </div>
                     {% else %}
-                        <p>Niestety nie odnotowaliśmy jeszcze żadnej wpłaty na twoje wydażenie.</p>
+                        <p>Niestety nie odnotowaliśmy jeszcze żadnej wpłaty na twoje wydarzenie.</p>
                         <p>Udostępnij wydarzenie i zaproś bliskich!</p>
                     {% endfor %}
                 </div>
@@ -124,34 +136,31 @@
                     <div class=" col-4 event_qr_section">
                         <h3 class="event_share_title">QR wydarzenia</h3>
                         <div class="event_qr_code_container">
+                            {% if event.pricePoint.qr %}
                             {#                        tutaj będzie wygenerowany QR #}
                             <img src="{{ qr_code_url( app.request.uri) }}" class="img-fluid event_qr_code" />
+                            {% else %}
+                                <p>Niestety twój pakiet nie posiada możliwości generowania kodów QR</p>
+                            {% endif %}
                         </div>
-                            <div class="event_share_icons">
-                                <img src="{{asset('/build/images/Print.03145de9.svg')}}" class="event_share_icon">
-                                <img src="{{asset('/build/images/fb.cd6f9276.svg')}}" class="event_share_icon">
-                                <img src="{{asset('/build/images/ig.44673bca.svg')}}" class="event_share_icon">
-                                <img src="{{asset('/build/images/tw.563d0bbf.svg')}}" class="event_share_icon">
-                            </div>
-
                     </div>
                     <div class="col-8 event_share_medias">
                         <h3 class="event_share_title">Linki i posty</h3>
-                        <div class="event_share_media">
+                        <div class="event_share_media"  id="buttonCopy">
                             <img src="{{ asset('build/images/Link.8f46b480.svg') }}" class="event_share_icon" alt="">
                             <h5>Kopiuj link</h5>
                         </div>
                         <div class="event_share_media">
                             <img src="{{ asset('build/images/fb.cd6f9276.svg') }}" class="event_share_icon" alt="">
-                            <h5>Udostępnij post na Facebooku</h5>
-                        </div>
-                        <div class="event_share_media">
-                            <img src="{{ asset('build/images/ig.44673bca.svg') }}" class="event_share_icon" alt="">
-                            <h5>Udostępnij post na Instagramie</h5>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank">
+                                <h5>Udostępnij post na Facebooku</h5>
+                            </a>
                         </div>
                         <div class="event_share_media">
                             <img src="{{ asset('build/images/tw.563d0bbf.svg') }}" class="event_share_icon" alt="">
-                            <h5>Udostępnij post na Twitterze</h5>
+                            <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Eshare%7Ctwgr%5E&text=Hej!%20Wpadnij%20na%20moje%20wydarzenie%20👀&url=http%3A%2F%2Fprezently.localhost%3A46469%2Fevent%2F{{ event.id }}"
+                               data-text="Hej! Wpadnij na moje wydarzenie 👀"
+                               data-show-count="false"><h5>Udostępnij post na Twitterze</h5></a>
                         </div>
                     </div>
                 </div>
@@ -178,19 +187,24 @@
                                     {% endif %}
                                 </ul>
                                 <br>
-                                <button class="bright-btn">Zmień pakiet</button>
+                                <a href="{{ path('app_event_change_price_point',{id: event.id}) }}" class="bright-btn">Zmień pakiet</a>
                             </div>
                         {% else %}
                             <p>Wow posiadasz aktualnie najlepszy dostępny pakiet.</p>
                         {% endif %}
                     </div>
                     <div class="col-8 event_qr_section">
-                        {% if event.pricePoint.amountOfGifts - event.getAmountOfGifts > 0 %}
-                            <p>W obecnym pakiecie możesz jeszcze dodać {{ event.pricePoint.amountOfGifts - event.getAmountOfGifts }} prezenty</p>
-                            <a href="{{ path('app_gift_new',{eventId: event.id}) }}" class="dark-btn">Dodaj prezent</a><br><br><br>
+                        {% if eventStatus %}
+                            {% if event.pricePoint.amountOfGifts - event.getAmountOfGifts > 0 %}
+                                <p>W obecnym pakiecie możesz jeszcze dodać {{ event.pricePoint.amountOfGifts - event.getAmountOfGifts }} prezenty</p>
+                                <a href="{{ path('app_gift_new',{eventId: event.id}) }}" class="dark-btn">Dodaj prezent</a><br><br><br>
+                            {% else %}
+                                <p>Osiągnięto maksymalną ilość prezentów dla danego pakietu. Zmień pakiet aby dodać więcej prezentów.</p>
+                            {% endif %}
                         {% else %}
-                            <p>Osiągnięto maksymalną ilość prezentów dla danego pakietu. Zmień pakiet aby dodać więcej prezentów.</p>
+                            <p>Twoje wydarzenie jest już nieaktywne, nie możesz przez to dodać więcej prezentów.</p>
                         {% endif %}
+
                         <p>Chcesz coś zmienić w swoim wydarzeniu?</p>
                         <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="bright-btn">Edytuj wydarzenie</a>
                     </div>

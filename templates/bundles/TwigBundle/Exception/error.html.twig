@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="content row">
+        <div class="col-4" id="spiral1">
+            <img class="img-fluid" src="{{ asset('build/images/Spiral1.c7ee73b8.svg') }}" alt="Spiral">
+        </div>
+        <div class="col-4 error_text">
+            <h1>Wystąpił błąd</h1><br>
+            <h5>Przepraszamy, nastąpił nieoczekiwany błąd.</h5><br><br>
+            <a href="{{ path('index') }}" class="bright-btn">Wróć na stronę główną</a>
+        </div>
+        <div class="col-4 " id="spiral2">
+            <img class="img-fluid" src="{{ asset('build/images/Spiral2.f7b4e014.svg') }}" alt="Spiral">
+        </div>
+
+    </div>
+
+
+{% endblock %}

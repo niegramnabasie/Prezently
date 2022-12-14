@@ -249,6 +249,26 @@ footer{
     cursor: pointer;
 }
 
+.border-btn{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    padding: var(--btn-padding);
+    border-radius: 4px;
+    border: 3px solid var(--brown40);
+    justify-content: center;
+    align-items: center;
+    background: white;
+    color: var(--brown40);
+    transition: all 0.3s ease-out;
+    text-decoration: none;
+}
+.border-btn:hover{
+    background: var(--brown40);
+    color: var(--white);
+    cursor: pointer;
+}
+
 
 /* Content */
 .content{
@@ -624,4 +644,25 @@ footer{
     margin-top: 40px;
     padding: 12px 13%;
     font-size: 16px;
+}
+
+.gifts_in_questionnaire{
+    display: flex;
+    justify-content: space-evenly;
+}
+.gifts_in_questionnaire div{
+    padding: 0;
+    margin: 15px 5px;
+}
+
+.error_container{
+    display: flex;
+    flex-wrap: wrap;
+}
+#spiral1{
+    margin-top: 25vh;
+}
+.error_text{
+    margin-top: 15vh;
+    text-align: center;
 }

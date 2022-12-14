@@ -11,10 +11,11 @@
         </div>
         <div class="sing-in-up questionnaire offset-1 col-5">
             <div>
-                <h4 class="">Tak chcę utworzyć ankietę.</h4>
-                <p>Czas trwania ankiety zależy od daty końcowej wydarzenia</p><br>
-                <h5>Data zakończenia ankiety: {{ qEndDate }}</h5>
+                <h4 class="">Tak chcę utworzyć ankietę</h4>
+                <h6>Czas trwania ankiety zależy od daty końcowej wydarzenia</h6>
+                <h6>Data zakończenia ankiety: {{ qEndDate }}</h6><br>
                 {{ form_start(form) }}
+                {{ form_row(form.endGiftAmount) }}
                 <div id="form_gift_event">
                     {{ form_row(form.endDate) }}
                     {{ form_row(form.eventId) }}
@@ -25,7 +26,7 @@
         </div>
         <div class="sing-in-up no_questionnaire col-5">
             <div>
-                <h4 class="title">Nie chcę tworzyć ankiety.</h4>
+                <h4 class="title">Nie chcę tworzyć ankiety</h4>
                 <a href="{{ path('app_event_show', {'id': eventId}) }}" class="bright-btn">Przejdź do wydarzenia</a>
             </div>
 

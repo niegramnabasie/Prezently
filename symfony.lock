@@ -41,6 +41,15 @@
     "endroid/qr-code-bundle": {
         "version": "4.1.1"
     },
+    "nzo/url-encryptor-bundle": {
+        "version": "6.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "42101a4fa1a537375c079e952e75338d017d6dae"
+        }
+    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {

@@ -7,6 +7,7 @@ use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\PricePointRepository;
 use App\Service\EventUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -15,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Nzo\UrlEncryptorBundle\Annotations\ParamDecryptor;
+use Nzo\UrlEncryptorBundle\Annotations\ParamEncryptor;
 
 #[Route('/event')]
 class EventController extends AbstractController
@@ -24,7 +27,10 @@ class EventController extends AbstractController
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
     public function index(EventRepository $eventRepository, EventUtil $util): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $events = $util->getEventsByUser();
+        $util->checkEventsAfterQuestionnaire($events);
         return $this->render('event/index.html.twig', [
             'events' => $events
         ]);
@@ -33,6 +39,8 @@ class EventController extends AbstractController
     #[Route('/new/', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EventRepository $eventRepository, PricePointRepository $pricePointRepository, EventUtil $util, SluggerInterface $slugger, Security $security): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $this->security = $security;
         $user = $this->security->getUser();
 
@@ -40,6 +48,7 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->get('user')->setData($user);
         $form->get('isPaid')->setData(false);
+        $form->get('selector')->setData($util->generateSelector());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,9 +94,24 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
+//    #[Route('/{id}', name: 'app_event_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+
+    #[Route('/{selector}', name: 'app_event_show', methods: ['GET'])]
+    #[Entity("Event", expr: "repository.findBy(['selector' => 'selector'])")]
     public function show(Event $event, EventUtil $util): Response
     {
+//      Check if the event has a Questionnaire and is it still active
+        if ($event->getQuestionnaire()){
+            if ($event->getQuestionnaire()->getEndDate()->format('U') > (new \DateTime())->format('U')){
+                return $this->redirectToRoute('app_questionnaire_show', ['id'=>$event->getQuestionnaire()->getId()], Response::HTTP_SEE_OTHER);
+            }
+            else{
+                if(!$event->getAmountOfGifts()){        //if there is no gifts in event
+                    $util->addGiftsFromQuestionnaire($event);
+                }
+            }
+        }
+
         $nextPP = $util->nextPricePoint($event);
         $isUserACreator = $util->isUserACreator($event);
         $donationsForEvent = $util->getDonationsForEvent($event);
@@ -103,15 +127,21 @@ class EventController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Event $event, EventRepository $eventRepository): Response
+    public function edit(Request $request, Event $event, EventRepository $eventRepository, EventUtil $util): Response
     {
+//      security options
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        if (!$util->isUserACreator($event)){
+            return $this->redirectToRoute('app_event_show', ['selector'=> $event->getSelector()], Response::HTTP_SEE_OTHER);
+        }
+
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
 
-            return $this->redirectToRoute('app_event_show', ['id'=>$event->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['selector'=> $event->getSelector()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('event/edit.html.twig', [
@@ -134,7 +164,7 @@ class EventController extends AbstractController
     public function payment(Request $request, Event $event, EventRepository $eventRepository, EventUtil $util, Security $security, PricePointRepository $pricePointRepository): Response
     {
         if ($event->isIsPaid() or !$util->isUserACreator($event)){
-            return $this->redirectToRoute('app_event_show', ['id'=> $event->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['selector'=> $event->getSelector()], Response::HTTP_SEE_OTHER);
         }
         $form = $this->createFormBuilder()
             ->add('price', NumberType::class,[
@@ -156,12 +186,45 @@ class EventController extends AbstractController
                 return $this->redirectToRoute('app_questionnaire_new', ['eventId'=> $event->getId()], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->redirectToRoute('app_event_show', ['id'=>$event->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_event_show', ['selector'=> $event->getSelector()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('event/payment.html.twig', [
             'event' => $event,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/change_price_point', name: 'app_event_change_price_point', methods: ['GET','POST'])]
+    public function change_price_point(Request $request, Event $event, EventUtil $util):Response
+    {
+        $nextPP = $util->nextPricePoint($event);
+        $price = $nextPP[0]->getPrice() - $event->getPricePoint()->getPrice();
+        $form = $this->createFormBuilder()
+            ->add('price', NumberType::class,[
+                'label'=>'Cena',
+                'attr'=>[
+                    'value'=>$price,
+                ],
+                'disabled'=>true,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $util->setNewPricePoint($event, $nextPP[0]);
+
+            $this->addFlash('success', 'Zmiana pakietu dla wydarzenia '.$event->getName().' przebiegła pomyślnie :)');
+
+            return $this->redirectToRoute('app_event_show', ['selector'=> $event->getSelector()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('event/change_price_point.html.twig', [
+            'nextPP' => $nextPP[0],
+            'event' => $event,
+            'form' => $form,
+        ]);
+
     }
 }

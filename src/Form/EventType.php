@@ -53,6 +53,7 @@ class EventType extends AbstractType
                     ])
                 ],
             ])
+            ->add('selector')
         ;
 
     }

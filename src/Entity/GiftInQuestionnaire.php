@@ -94,4 +94,15 @@ class GiftInQuestionnaire
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    public function addVote(int $amount)
+    {
+        $this->voteAmount += $amount;
+        return $this;
+    }
 }

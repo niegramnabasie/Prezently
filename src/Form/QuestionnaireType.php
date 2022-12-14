@@ -3,13 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Questionnaire;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class QuestionnaireType extends AbstractType
 {
@@ -18,6 +15,9 @@ class QuestionnaireType extends AbstractType
         $builder
             ->add('endDate')
             ->add('eventId')
+            ->add('endGiftAmount',IntegerType::class, [
+                'label'=> 'Końcowa ilość prezentów w wydarzeniu',
+            ])
         ;
     }
 

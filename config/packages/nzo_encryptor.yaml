@@ -1,0 +1,7 @@
+nzo_encryptor:
+  secret_key: 1\xB4\xFB.\x80_\x18\x24\xBA\x81\xA5b\x04u\xBE\x1D\xD6\xB3\x24\xE6\xE3\x96\x88\x04\x9B8\x00\xFA\xCF\xD8\xD6j   # Required, max length of 100 characters.
+#  secret_iv:  Your_Secret_Iv               # Required only if "random_pseudo_bytes" is FALSE. Max length of 100 characters.
+#  cipher_algorithm:                        # optional, default: 'aes-256-ctr'
+#  base64_encode:                           # optional, default: TRUE
+#  format_base64_output:                    # optional, default: TRUE, used only when 'base64_encode' is set to TRUE
+#  random_pseudo_bytes:                     # optional, default: TRUE (generate a random encrypted text output each time => MORE SECURE !)
